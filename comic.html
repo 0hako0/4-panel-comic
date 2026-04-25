@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ねこのじかん</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Kaisei+Decol:wght@400;700&display=swap');
+:root{--cream:#fdf6ec;--orange:#e8874a;--olight:#f5b07a;--brown:#8b5e3c;--ink:#1a1208;--pbg:#fffdf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);background-image:radial-gradient(circle at 20% 20%,#f5e6d020 0%,transparent 50%),radial-gradient(circle at 80% 80%,#e8874a10 0%,transparent 50%);font-family:'Zen Maru Gothic',sans-serif;min-height:100vh;padding:20px 16px 60px;display:flex;flex-direction:column;align-items:center}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:18px}
+.cats-emoji{font-size:1.8rem;display:block;margin-bottom:4px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.header-title{font-family:‘Kaisei Decol’,serif;font-size:2rem;font-weight:700;color:var(–brown);letter-spacing:2px}
+.header-title span{color:var(–orange)}
+.header-sub{font-size:0.72rem;color:#b8895a;margin-top:4px;letter-spacing:3px}
+
+/* TABS */
+.main-tabs{display:flex;gap:6px;width:100%;max-width:480px;margin-bottom:16px}
+.main-tab{flex:1;padding:10px;border:2px solid var(–olight);border-radius:10px;background:white;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.78rem;font-weight:700;color:#bbb;cursor:pointer;transition:all 0.2s}
+.main-tab.active{background:var(–orange);border-color:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
+.section{display:none;width:100%;max-width:480px;flex-direction:column}
+.section.show{display:flex}
+
+/* CHAR SETUP */
+.char-setup{display:flex;gap:10px;margin-bottom:12px}
+.char-slot{flex:1;background:white;border:2px solid var(–olight);border-radius:14px;padding:12px;text-align:center;box-shadow:3px 3px 0 var(–olight);transition:all 0.2s}
+.char-slot.confirmed{border-color:var(–orange);box-shadow:3px 3px 0 var(–orange)}
+.char-slot-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(–olight);margin:0 auto 6px;display:none}
+.char-slot-ph{width:80px;height:80px;border-radius:50%;border:3px dashed var(–olight);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:#fdf8f0}
+.char-name{font-size:0.85rem;font-weight:700;color:var(–brown);margin-bottom:2px}
+.char-desc{font-size:0.6rem;color:#999;line-height:1.4;margin-bottom:6px}
+.char-st{font-size:0.62rem;color:var(–orange);min-height:14px;margin-bottom:4px}
+.btn-c{width:100%;padding:6px;border:none;border-radius:8px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;margin-top:4px;transition:all 0.15s}
+.btn-c-gen{background:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
+.btn-c-gen:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(–brown)}
+.btn-c-rst{background:white;color:var(–brown);border:1.5px solid var(–olight)!important}
+
+/* PERSONALITY SLIDERS */
+.slider-section{background:white;border:2px solid var(–olight);border-radius:12px;padding:12px;margin-bottom:12px}
+.slider-title{font-size:0.72rem;font-weight:700;color:var(–brown);margin-bottom:10px}
+.slider-row{margin-bottom:10px}
+.slider-labels{display:flex;justify-content:space-between;font-size:0.62rem;color:#aaa;margin-bottom:4px}
+.slider-name{font-size:0.68rem;color:var(–brown);font-weight:700;margin-bottom:3px}
+input[type=range]{width:100%;accent-color:var(–orange);height:4px}
+
+/* INPUTS */
+.api-section{margin-bottom:14px}
+.lbl{font-size:0.72rem;color:#b8895a;margin-bottom:5px;display:block}
+.inp{width:100%;padding:12px 14px;border:2px solid var(–olight);border-radius:12px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.85rem;background:white;color:var(–ink);outline:none}
+.inp:focus{border-color:var(–orange)}
+.hint{font-size:0.62rem;color:#ccc;margin-top:3px}
+
+/* MODE TABS */
+.mode-tabs{display:flex;gap:6px;margin-bottom:10px}
+.tab{flex:1;padding:10px;border:2px solid var(–olight);border-radius:10px;background:white;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.8rem;font-weight:700;color:#bbb;cursor:pointer;transition:all 0.2s}
+.tab.active{background:var(–orange);border-color:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
+.theme-wrap{display:none;gap:8px}
+.theme-wrap.show{display:flex}
+.tags{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0 10px}
+.tag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.tag:hover,.tag.sel{background:var(–orange);border-color:var(–orange);color:white}
+
+/* STYLE PRESETS */
+.style-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.stag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.stag.sel{background:#6b48cc;border-color:#6b48cc;color:white}
+
+/* BG THEMES */
+.bg-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.bgtag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.bgtag.sel{background:var(–orange);border-color:var(–orange);color:white}
+
+/* BUBBLE TOGGLE */
+.toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px 12px;background:white;border:1.5px solid var(–olight);border-radius:10px}
+.toggle-lbl{font-size:0.75rem;color:var(–brown);font-weight:700;flex:1}
+.toggle{position:relative;width:44px;height:24px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:24px;transition:0.3s}
+.toggle-slider:before{content:’’;position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s}
+.toggle input:checked + .toggle-slider{background:var(–orange)}
+.toggle input:checked + .toggle-slider:before{transform:translateX(20px)}
+
+/* GEN BUTTON */
+.btn-gen{width:100%;padding:16px;background:var(–orange);border:none;border-radius:14px;font-family:‘Kaisei Decol’,serif;font-size:1.1rem;font-weight:700;color:white;cursor:pointer;box-shadow:4px 4px 0 var(–brown);transition:all 0.15s;margin-bottom:12px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gen:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(–brown)}
+.btn-gen:disabled{background:#ddd;box-shadow:2px 2px 0 #bbb;cursor:not-allowed}
+@keyframes spin2{to{transform:rotate(360deg)}}
+.btn-spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin2 0.7s linear infinite;display:none}
+.btn-gen.loading .btn-spinner{display:block}
+
+/* STATUS */
+.status{width:100%;max-width:480px;text-align:center;font-size:0.75rem;color:#b8895a;min-height:20px;margin-bottom:12px}
+
+/* COMIC */
+.comic-wrap{width:100%;max-width:480px;margin-bottom:12px}
+.comic-bar{background:var(–ink);color:white;padding:10px 14px;border-radius:12px 12px 0 0}
+.comic-bar-title{font-family:‘Kaisei Decol’,serif;font-size:0.95rem;letter-spacing:1px;background:transparent;border:none;color:white;width:100%;outline:none;font-family:‘Kaisei Decol’,serif}
+.comic-bar-sub{font-size:0.65rem;color:var(–olight);letter-spacing:0.5px;background:transparent;border:none;color:var(–olight);width:100%;outline:none;margin-top:2px;font-family:‘Zen Maru Gothic’,sans-serif}
+.igrid{display:flex;flex-direction:column;gap:12px;padding:12px;background:var(–ink);border:2px solid var(–ink);border-top:none;border-radius:0 0 12px 12px}
+.icard{background:var(–pbg);border-radius:10px;overflow:hidden;box-shadow:2px 2px 0 var(–brown)}
+.iimg{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#fdf0e0}
+.iimg img{width:100%;height:100%;object-fit:cover;display:block}
+.ploading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fdf0e0;gap:6px;z-index:2}
+.spinner{width:28px;height:28px;border:3px solid #f5d8b8;border-top-color:var(–orange);border-radius:50%;animation:spin2 0.7s linear infinite}
+.lcat{font-size:1.4rem;animation:float 1s ease-in-out infinite}
+.ifooter{padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.inum{font-size:0.65rem;color:#bbb;font-family:‘Kaisei Decol’,serif}
+.ibubble{font-size:0.85rem;font-weight:700;color:var(–brown);border:none;background:transparent;font-family:‘Zen Maru Gothic’,sans-serif;width:100%;outline:none;border-bottom:1px dashed var(–olight);padding:2px 0}
+.icap{font-size:0.78rem;color:#666;border:none;background:transparent;font-family:‘Zen Maru Gothic’,sans-serif;width:100%;outline:none;border-bottom:1px dashed #eee;padding:2px 0}
+.iactions{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.btn-sm{padding:5px 10px;border:none;border-radius:8px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;transition:all 0.15s}
+.btn-sm:active{transform:translate(1px,1px)}
+.btn-dl{background:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
+.btn-dl:disabled{background:#ddd;box-shadow:none;cursor:not-allowed}
+.btn-regen-img{background:#27ae60;color:white;box-shadow:2px 2px 0 #1e8449}
+.btn-regen-txt{background:#2980b9;color:white;box-shadow:2px 2px 0 #1a5276}
+.btn-share{background:white;color:var(–orange);border:1.5px solid var(–orange)}
+
+/* BOTTOM */
+.bot-btns{width:100%;max-width:480px;display:flex;gap:10px;margin-bottom:6px}
+.btn-sub{flex:1;padding:13px;border:2px solid var(–orange);border-radius:12px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.15s;box-shadow:2px 2px 0 var(–brown)}
+.btn-sub:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(–brown)}
+.btn-all{background:var(–orange);color:white}
+.btn-stamp{background:#06c755;color:white;border-color:#06c755}
+.btn-stamp:disabled{background:#ddd;border-color:#ddd;box-shadow:none;cursor:not-allowed}
+.btn-all:disabled{background:#ddd;border-color:#ddd;box-shadow:none;cursor:not-allowed}
+
+/* HISTORY */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:360px){.hgrid{grid-template-columns:1fr}}
+.hitem{background:white;border:2px solid var(–olight);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.15s;box-shadow:2px 2px 0 var(–olight)}
+.hitem:hover{box-shadow:3px 3px 0 var(–orange);border-color:var(–orange)}
+.hitem.fav{border-color:#f1c40f;box-shadow:2px 2px 0 #f1c40f}
+.hthumb{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#eee;aspect-ratio:1}
+.hthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.hthumb-ph{background:#fdf0e0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.hinfo{padding:8px 10px;display:flex;align-items:flex-start;gap:4px}
+.hinfo-text{flex:1}
+.htitle{font-size:0.75rem;font-weight:700;color:var(–brown)}
+.hsub{font-size:0.62rem;color:#aaa;margin-top:1px}
+.hdate{font-size:0.58rem;color:#ccc;margin-top:2px}
+.btn-fav{background:none;border:none;font-size:1rem;cursor:pointer;padding:2px}
+.hempty{text-align:center;padding:40px 20px;color:#ccc;font-size:0.85rem;grid-column:span 2}
+
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:20px}
+.mbg.show{display:flex}
+.modal{background:white;border-radius:16px;padding:20px;width:100%;max-width:400px}
+.modal h3{font-family:‘Kaisei Decol’,serif;color:var(–brown);margin-bottom:12px;font-size:1rem}
+.modal textarea{width:100%;border:2px solid var(–olight);border-radius:10px;padding:10px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.78rem;line-height:1.6;min-height:150px;outline:none;resize:vertical;color:var(–ink)}
+.mbtns{display:flex;gap:8px;margin-top:12px}
+.mbtn{flex:1;padding:10px;border:none;border-radius:10px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer}
+.mbtn-cp{background:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
+.mbtn-cl{background:white;color:var(–brown);border:1.5px solid var(–olight)}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(–ink);color:white;padding:10px 20px;border-radius:20px;font-size:0.78rem;font-weight:700;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast.show{opacity:1}
+
+.paw{font-size:0.7rem;color:#ddd;text-align:center;margin-top:20px;letter-spacing:4px}
+/* CHAR CUSTOM */
+.char-custom{background:white;border:2px solid var(–olight);border-radius:12px;padding:12px;margin-bottom:12px}
+.char-custom-title{font-size:0.72rem;font-weight:700;color:var(–brown);margin-bottom:8px}
+.char-custom-row{margin-bottom:10px}
+.char-custom-name{font-size:0.68rem;color:var(–brown);font-weight:700;margin-bottom:4px}
+.char-custom-inp{width:100%;padding:8px 10px;border:1.5px solid var(–olight);border-radius:8px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.75rem;background:#fdf8f4;color:var(–ink);outline:none;resize:none;min-height:36px}
+.char-custom-inp:focus{border-color:var(–orange)}
+.char-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.char-tag{padding:3px 10px;background:#f5f0ea;border:1.5px solid var(–olight);border-radius:14px;font-size:0.65rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.char-tag:hover{background:var(–orange);border-color:var(–orange);color:white}
+.char-custom-hint{font-size:0.6rem;color:#ccc;margin-top:4px}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+  <span class="cats-emoji">🐱🐱</span>
+  <div class="header-title">ねこの<span>じかん</span></div>
+  <div class="header-sub">〜 ふたり茶白の四コマメーカー 〜</div>
+</div>
+
+<div class="main-tabs">
+  <button class="main-tab active" id="mtab-make" onclick="showSec('make',this)">🎨 つくる</button>
+  <button class="main-tab" id="mtab-char" onclick="showSec('char',this)">🐱 キャラ</button>
+  <button class="main-tab" id="mtab-history" onclick="showSec('history',this)">📚 履歴</button>
+</div>
+
+<!-- ===== MAKE ===== -->
+
+<div class="section show" id="sec-make">
+  <div class="api-section">
+    <span class="lbl">🔑 Gemini APIキー</span>
+    <input class="inp" id="apiKey" type="password" placeholder="AIza..." />
+    <div class="hint">Google AI Studio で取得 → ブラウザにのみ保存</div>
+  </div>
+
+  <div class="mode-tabs">
+    <button class="tab active" id="tab-r" onclick="setMode('r')">🎲 ランダム</button>
+    <button class="tab" id="tab-t" onclick="setMode('t')">✏️ テーマ入力</button>
+  </div>
+  <div id="area-r">
+    <span class="lbl">ネタを選ぶ（省略可）:</span>
+    <div class="tags">
+      <span class="tag" onclick="selTag(this)">朝ごはん</span>
+      <span class="tag" onclick="selTag(this)">昼寝</span>
+      <span class="tag" onclick="selTag(this)">いたずら</span>
+      <span class="tag" onclick="selTag(this)">おもちゃ</span>
+      <span class="tag" onclick="selTag(this)">窓の外</span>
+      <span class="tag" onclick="selTag(this)">おふろ</span>
+      <span class="tag" onclick="selTag(this)">ケンカ</span>
+      <span class="tag" onclick="selTag(this)">仲直り</span>
+      <span class="tag" onclick="selTag(this)">夜中の運動会</span>
+      <span class="tag" onclick="selTag(this)">ごはん待ち</span>
+    </div>
+  </div>
+  <div class="theme-wrap" id="area-t">
+    <input class="inp" id="themeInp" placeholder="例：雨の日の退屈、おやつを狙う..." maxlength="30" />
+  </div>
+
+<span class="lbl">🎨 画像スタイル:</span>
+
+  <div class="style-row">
+    <span class="stag sel" onclick="selStyle(this)" data-style="cute kawaii chibi cartoon style, thick black outlines, flat color, cel shading">かわいい</span>
+    <span class="stag" onclick="selStyle(this)" data-style="watercolor painting style, soft brushstrokes, pastel watercolor">水彩</span>
+    <span class="stag" onclick="selStyle(this)" data-style="anime style, clean lineart, vibrant colors, manga illustration">アニメ</span>
+    <span class="stag" onclick="selStyle(this)" data-style="simple black and white line drawing, minimal sketch style">線画</span>
+    <span class="stag" onclick="selStyle(this)" data-style="realistic detailed illustration, painterly style">リアル風</span>
+  </div>
+
+<span class="lbl">🌿 背景テーマ:</span>
+
+  <div class="bg-row">
+    <span class="bgtag sel" onclick="selBg(this)" data-bg="cozy japanese apartment interior">室内</span>
+    <span class="bgtag" onclick="selBg(this)" data-bg="sunny garden with flowers">庭</span>
+    <span class="bgtag" onclick="selBg(this)" data-bg="night scene with moon and stars">夜</span>
+    <span class="bgtag" onclick="selBg(this)" data-bg="rainy window with raindrops">雨の日</span>
+    <span class="bgtag" onclick="selBg(this)" data-bg="cozy kotatsu living room winter">こたつ</span>
+    <span class="bgtag" onclick="selBg(this)" data-bg="simple clean white background">シンプル</span>
+  </div>
+
+  <div class="toggle-row">
+    <span class="toggle-lbl">💬 吹き出しを画像に合成</span>
+    <label class="toggle">
+      <input type="checkbox" id="bubbleToggle" checked onchange="toggleBubble()">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <button class="btn-gen" id="genBtn" onclick="generate()">
+    <div class="btn-spinner" id="genSpinner"></div>
+    <span id="genBtnTxt">🐾 四コマを生成する</span>
+  </button>
+  <div class="status" id="statusBar">テーマを選んで生成ボタンを押してね</div>
+
+  <div class="comic-wrap" id="comicWrap">
+    <div class="comic-bar">
+      <input class="comic-bar-title" id="comicTitle" value="ねこのじかん" />
+      <input class="comic-bar-sub" id="comicSub" value="〜 サブタイトル自動生成 〜" />
+    </div>
+    <div class="igrid">
+      <div class="icard" id="p1">
+        <div class="iimg"><div class="ploading"><div class="lcat">🐱</div><div class="spinner"></div></div></div>
+        <div class="ifooter">
+          <div class="inum">1 / 4</div>
+          <input class="ibubble" id="b1" value="..." oninput="onBubbleEdit(1)" />
+          <input class="icap" id="c1" value="生成中..." />
+          <div class="iactions">
+            <button class="btn-sm btn-regen-img" onclick="regenPanel(1)" disabled id="ri1">🖼 再生成</button>
+            <button class="btn-sm btn-regen-txt" onclick="regenBubble(1)" disabled id="rt1">💬 セリフ</button>
+            <button class="btn-sm btn-share" onclick="openShare(1)">📋</button>
+            <button class="btn-sm btn-dl" id="dl1" disabled onclick="dlPanel(1)">⬇️</button>
+          </div>
+        </div>
+      </div>
+      <div class="icard" id="p2">
+        <div class="iimg"><div class="ploading"><div class="lcat">🐱</div><div class="spinner"></div></div></div>
+        <div class="ifooter">
+          <div class="inum">2 / 4</div>
+          <input class="ibubble" id="b2" value="..." oninput="onBubbleEdit(2)" />
+          <input class="icap" id="c2" value="生成中..." />
+          <div class="iactions">
+            <button class="btn-sm btn-regen-img" onclick="regenPanel(2)" disabled id="ri2">🖼 再生成</button>
+            <button class="btn-sm btn-regen-txt" onclick="regenBubble(2)" disabled id="rt2">💬 セリフ</button>
+            <button class="btn-sm btn-share" onclick="openShare(2)">📋</button>
+            <button class="btn-sm btn-dl" id="dl2" disabled onclick="dlPanel(2)">⬇️</button>
+          </div>
+        </div>
+      </div>
+      <div class="icard" id="p3">
+        <div class="iimg"><div class="ploading"><div class="lcat">🐱</div><div class="spinner"></div></div></div>
+        <div class="ifooter">
+          <div class="inum">3 / 4</div>
+          <input class="ibubble" id="b3" value="..." oninput="onBubbleEdit(3)" />
+          <input class="icap" id="c3" value="生成中..." />
+          <div class="iactions">
+            <button class="btn-sm btn-regen-img" onclick="regenPanel(3)" disabled id="ri3">🖼 再生成</button>
+            <button class="btn-sm btn-regen-txt" onclick="regenBubble(3)" disabled id="rt3">💬 セリフ</button>
+            <button class="btn-sm btn-share" onclick="openShare(3)">📋</button>
+            <button class="btn-sm btn-dl" id="dl3" disabled onclick="dlPanel(3)">⬇️</button>
+          </div>
+        </div>
+      </div>
+      <div class="icard" id="p4">
+        <div class="iimg"><div class="ploading"><div class="lcat">🐱</div><div class="spinner"></div></div></div>
+        <div class="ifooter">
+          <div class="inum">4 / 4</div>
+          <input class="ibubble" id="b4" value="..." oninput="onBubbleEdit(4)" />
+          <input class="icap" id="c4" value="生成中..." />
+          <div class="iactions">
+            <button class="btn-sm btn-regen-img" onclick="regenPanel(4)" disabled id="ri4">🖼 再生成</button>
+            <button class="btn-sm btn-regen-txt" onclick="regenBubble(4)" disabled id="rt4">💬 セリフ</button>
+            <button class="btn-sm btn-share" onclick="openShare(4)">📋</button>
+            <button class="btn-sm btn-dl" id="dl4" disabled onclick="dlPanel(4)">⬇️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bot-btns">
+    <button class="btn-sub btn-all" id="saveBtn" disabled onclick="dlAll()">💾 4枚まとめて保存</button>
+  </div>
+  <div class="bot-btns" style="margin-top:6px">
+    <button class="btn-sub btn-stamp" id="stampBtn" disabled onclick="exportStamps()">🐾 LINEスタンプ用に出力</button>
+  </div>
+</div>
+
+<!-- ===== CHAR ===== -->
+
+<div class="section" id="sec-char">
+  <div class="char-setup">
+    <div class="char-slot" id="slot-m">
+      <div class="char-slot-ph" id="ph-m">🟠</div>
+      <img class="char-slot-img" id="img-m" />
+      <div class="char-name">まるまる</div>
+      <div class="char-desc">のんびり・食いしんぼ<br>しっぽ普通サイズ</div>
+      <div class="char-st" id="st-m"></div>
+      <button class="btn-c btn-c-gen" onclick="genChar('m')">🎨 生成</button>
+      <button class="btn-c btn-c-rst" onclick="rstChar('m')">↺ リセット</button>
+    </div>
+    <div class="char-slot" id="slot-y">
+      <div class="char-slot-ph" id="ph-y">🧡</div>
+      <img class="char-slot-img" id="img-y" />
+      <div class="char-name">やんちゃ</div>
+      <div class="char-desc">元気・遊び大好き<br>しっぽ短い</div>
+      <div class="char-st" id="st-y"></div>
+      <button class="btn-c btn-c-gen" onclick="genChar('y')">🎨 生成</button>
+      <button class="btn-c btn-c-rst" onclick="rstChar('y')">↺ リセット</button>
+    </div>
+  </div>
+
+  <!-- キャラ自由設定 -->
+
+  <div class="char-custom">
+    <div class="char-custom-title">✏️ キャラ追加設定（2〜3個まで）</div>
+    <div class="char-custom-row">
+      <div class="char-custom-name">🟠 まるまる</div>
+      <input class="char-custom-inp" id="charFree-m" placeholder="例：食いしん坊、関西弁、ツンデレ..." oninput="saveCharFree()" />
+      <div class="char-tag-row">
+        <span class="char-tag" onclick="addCharTag('m','食いしん坊')">食いしん坊</span>
+        <span class="char-tag" onclick="addCharTag('m','毒舌')">毒舌</span>
+        <span class="char-tag" onclick="addCharTag('m','泣き虫')">泣き虫</span>
+        <span class="char-tag" onclick="addCharTag('m','ツンデレ')">ツンデレ</span>
+        <span class="char-tag" onclick="addCharTag('m','関西弁')">関西弁</span>
+        <span class="char-tag" onclick="addCharTag('m','語尾ニャ')">語尾ニャ</span>
+        <span class="char-tag" onclick="addCharTag('m','哲学的')">哲学的</span>
+      </div>
+    </div>
+    <div class="char-custom-row">
+      <div class="char-custom-name">🧡 やんちゃ</div>
+      <input class="char-custom-inp" id="charFree-y" placeholder="例：元気すぎ、おっちょこちょい..." oninput="saveCharFree()" />
+      <div class="char-tag-row">
+        <span class="char-tag" onclick="addCharTag('y','元気すぎ')">元気すぎ</span>
+        <span class="char-tag" onclick="addCharTag('y','おっちょこちょい')">おっちょこちょい</span>
+        <span class="char-tag" onclick="addCharTag('y','甘えん坊')">甘えん坊</span>
+        <span class="char-tag" onclick="addCharTag('y','いたずら好き')">いたずら好き</span>
+        <span class="char-tag" onclick="addCharTag('y','泣き虫')">泣き虫</span>
+        <span class="char-tag" onclick="addCharTag('y','語尾ニャ')">語尾ニャ</span>
+      </div>
+    </div>
+    <div class="char-custom-hint">⚠️ 入れすぎるとAIが混乱します。2〜3個が限界です</div>
+  </div>
+
+  <div class="slider-section">
+    <div class="slider-title">🎭 キャラ性格カスタム</div>
+    <div class="slider-row">
+      <div class="slider-name">まるまる</div>
+      <div class="slider-labels"><span>おっとり</span><span>うるさい</span></div>
+      <input type="range" id="sl-m-energy" min="0" max="100" value="20">
+    </div>
+    <div class="slider-row">
+      <div class="slider-labels"><span>優しい</span><span>意地悪</span></div>
+      <input type="range" id="sl-m-mood" min="0" max="100" value="20">
+    </div>
+    <div class="slider-row" style="margin-top:10px">
+      <div class="slider-name">やんちゃ</div>
+      <div class="slider-labels"><span>おっとり</span><span>うるさい</span></div>
+      <input type="range" id="sl-y-energy" min="0" max="100" value="80">
+    </div>
+    <div class="slider-row">
+      <div class="slider-labels"><span>優しい</span><span>意地悪</span></div>
+      <input type="range" id="sl-y-mood" min="0" max="100" value="30">
+    </div>
+  </div>
+  <div style="font-size:0.68rem;color:#b8895a;text-align:center">性格はストーリー生成のプロンプトに反映されます</div>
+</div>
+
+<!-- ===== HISTORY ===== -->
+
+<div class="section" id="sec-history">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-size:0.8rem;font-weight:700;color:var(--brown)">📚 生成履歴</span>
+    <button onclick="clearHist()" style="font-size:0.65rem;color:#ccc;border:none;background:none;cursor:pointer">全削除</button>
+  </div>
+  <div class="hgrid" id="hgrid"></div>
+</div>
+
+<!-- SHARE MODAL -->
+
+<div class="mbg" id="shareMod">
+  <div class="modal">
+    <h3>📋 シェア用キャプション</h3>
+    <textarea id="shareTxt" readonly></textarea>
+    <div class="mbtns">
+      <button class="mbtn mbtn-cp" onclick="cpShare()">コピー</button>
+      <button class="mbtn mbtn-cl" onclick="clShare()">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+<div class="paw">🐾 🐾 🐾</div>
+
+<script>
+// ===== STATE =====
+let mode='r', selTagVal='', selBgVal='cozy japanese apartment interior';
+let selStyleVal='cute kawaii chibi cartoon style, thick black outlines, flat color, cel shading';
+let showBubble=true;
+let story=null, imgs={}, charImgs={m:null,y:null}, bubblePos={};
+const ORANGE='#e8874a';
+
+const CHAR_BASE='consistent character design, same art style throughout';
+const MARU_DESC='chubby plump orange tabby cat with white chest and belly, normal length striped tail, sleepy half-closed eyes, relaxed lazy pose';
+const YANC_DESC='small slim orange tabby cat with white chest and belly, very short bob tail, bright wide open eyes, energetic lively pose';
+
+// ===== INIT =====
+window.addEventListener('load',()=>{
+  const k=localStorage.getItem('neko_key');if(k)document.getElementById('apiKey').value=k;
+  ['m','y'].forEach(n=>{const s=localStorage.getItem(`neko_char_${n}`);if(s)applyChar(n,s,true)});
+  loadCharFree();
+  renderHist();
+});
+document.getElementById('apiKey').addEventListener('input',e=>localStorage.setItem('neko_key',e.target.value.trim()));
+
+// ===== TOAST =====
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ===== SECTIONS =====
+function showSec(name,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('show'));
+  document.getElementById(`sec-${name}`).classList.add('show');
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  if(name==='history')renderHist();
+}
+
+// ===== MODE =====
+function setMode(m){
+  mode=m;
+  document.getElementById('tab-r').classList.toggle('active',m==='r');
+  document.getElementById('tab-t').classList.toggle('active',m==='t');
+  document.getElementById('area-r').style.display=m==='r'?'block':'none';
+  document.getElementById('area-t').classList.toggle('show',m==='t');
+}
+function selTag(el){
+  document.querySelectorAll('.tag').forEach(t=>t.classList.remove('sel'));
+  selTagVal=selTagVal===el.textContent?'':(el.classList.add('sel'),el.textContent);
+}
+function selBg(el){
+  document.querySelectorAll('.bgtag').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');selBgVal=el.dataset.bg;
+}
+function selStyle(el){
+  document.querySelectorAll('.stag').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');selStyleVal=el.dataset.style;
+}
+function toggleBubble(){showBubble=document.getElementById('bubbleToggle').checked;recompositeAll();}
+
+// ===== CHAR =====
+function applyChar(n,src,fromStorage=false){
+  charImgs[n]=src;
+  const img=document.getElementById(`img-${n}`);
+  img.src=src;img.style.display='block';
+  document.getElementById(`ph-${n}`).style.display='none';
+  document.getElementById(`st-${n}`).textContent='✅ 確定済み';
+  document.getElementById(`slot-${n}`).classList.add('confirmed');
+  if(!fromStorage)localStorage.setItem(`neko_char_${n}`,src);
+}
+function rstChar(n){
+  charImgs[n]=null;
+  document.getElementById(`img-${n}`).style.display='none';
+  document.getElementById(`ph-${n}`).style.display='flex';
+  document.getElementById(`st-${n}`).textContent='';
+  document.getElementById(`slot-${n}`).classList.remove('confirmed');
+  localStorage.removeItem(`neko_char_${n}`);
+}
+async function genChar(n){
+  const st=document.getElementById(`st-${n}`);st.textContent='🎨 生成中...';
+  const prompt=n==='m'
+    ?`${CHAR_BASE}, ${MARU_DESC}, ${selStyleVal}, portrait, white background, full body`
+    :`${CHAR_BASE}, ${YANC_DESC}, ${selStyleVal}, portrait, white background, full body`;
+  try{
+    const image=await loadPollinations(prompt,512,512);
+    const c=document.createElement('canvas');c.width=image.width;c.height=image.height;
+    c.getContext('2d').drawImage(image,0,0);
+    applyChar(n,c.toDataURL('image/jpeg',0.7));
+    st.textContent='✅ 確定！';
+  }catch{st.textContent='⚠️ 失敗。再試行してね';}
+}
+
+// ===== CHAR FREE INPUT =====
+function addCharTag(name, txt){
+  const el=document.getElementById(`charFree-${name}`);
+  // Count existing tags (comma-separated)
+  const cur=el.value.trim();
+  const count=cur?cur.split('、').filter(s=>s.trim()).length:0;
+  if(count>=3){showToast('2〜3個までが目安です！');return;}
+  el.value=(cur?cur+'、':'')+txt;
+  saveCharFree();
+}
+function saveCharFree(){
+  localStorage.setItem('neko_charrfree_m',document.getElementById('charFree-m').value);
+  localStorage.setItem('neko_charrfree_y',document.getElementById('charFree-y').value);
+}
+function loadCharFree(){
+  const m=localStorage.getItem('neko_charrfree_m');
+  const y=localStorage.getItem('neko_charrfree_y');
+  if(m)document.getElementById('charFree-m').value=m;
+  if(y)document.getElementById('charFree-y').value=y;
+}
+function getCharFree(name){
+  const val=document.getElementById(`charFree-${name}`)?.value.trim();
+  return val||'';
+}
+
+// ===== PERSONALITY =====
+function getPersonality(name){
+  const energy=parseInt(document.getElementById(`sl-${name}-energy`).value);
+  const mood=parseInt(document.getElementById(`sl-${name}-mood`).value);
+  const energyDesc=energy<33?'calm and quiet':energy<66?'moderately energetic':'very loud and hyperactive';
+  const moodDesc=mood<33?'gentle and sweet':mood<66?'neutral':'mischievous and slightly naughty';
+  return `${energyDesc}, ${moodDesc}`;
+}
+
+// ===== GEMINI =====
+async function callGemini(theme){
+  const key=document.getElementById('apiKey').value.trim();
+  if(!key)throw new Error('APIキーを入力してください');
+  const mPers=getPersonality('m'),yPers=getPersonality('y');
+  const mFree=getCharFree('m'),yFree=getCharFree('y');
+  const mTraits=mFree?mFree.split('、').map(s=>s.trim()).filter(Boolean):[];
+  const yTraits=yFree?yFree.split('、').map(s=>s.trim()).filter(Boolean):[];
+  const mExtra=mTraits.length?`\n  以下の特徴を必ず会話・行動に反映：\n${mTraits.map(t=>`  - ${t}`).join('\n')}`:'';
+  const yExtra=yTraits.length?`\n  以下の特徴を必ず会話・行動に反映：\n${yTraits.map(t=>`  - ${t}`).join('\n')}`:'';
+  const sys=`あなたは猫の四コマ漫画シナリオライターです。
+2匹の茶白猫が主役：
+- まるまる：大食い、しっぽ普通。性格：${mPers}${mExtra}
+- やんちゃ：しっぽ短い。性格：${yPers}${yExtra}
+JSONのみ返してください。バッククォート不要。
+4コマは必ず「起承転結」で構成してください：
+- 1コマ目（起）: 日常の導入シーン
+- 2コマ目（承）: 小さな変化や予兆
+- 3コマ目（転）: 転換・意外な行動・ハプニング
+- 4コマ目（結）: シュールまたは平和なオチ（必ずオチをつける）
+sceneには必ずキャラの表情(facial expression)を具体的に含めること（例: shocked face, happy closed eyes, evil grin, sulking face, sparkling eyes など）。
+{"title":"タイトル(10文字以内)","subtitle":"サブタイトル(20文字以内)","hashtags":"#猫など5-8個","panels":[{"caption":"コマ説明(15文字以内)","bubble":"セリフ(12文字以内)","speaker":"まるまる or やんちゃ","scene":"英語シーン説明+facial expression(30words以内)"},{"caption":"...","bubble":"...","speaker":"...","scene":"..."},{"caption":"...","bubble":"...","speaker":"...","scene":"..."},{"caption":"...","bubble":"...","speaker":"...","scene":"..."}]}`;
+  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${key}`,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system_instruction:{parts:[{text:sys}]},contents:[{parts:[{text:theme?`テーマ「${theme}」で四コマを作って`:'ランダムな面白い四コマを作って'}]}],generationConfig:{temperature:1.0}})
+  });
+  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'Gemini APIエラー')}
+  const d=await res.json();
+  const raw=d.candidates[0].content.parts[0].text.replace(/```json|```/g,'').trim();
+  try{return JSON.parse(raw);}catch{throw new Error('生成形式が不正です（再試行してください）')}
+}
+
+async function regenBubbleOnly(n){
+  const key=document.getElementById('apiKey').value.trim();
+  if(!key){showToast('APIキーを入力してください');return}
+  if(!story?.panels?.[n-1])return;
+  const btn=document.getElementById(`rt${n}`);btn.disabled=true;btn.textContent='...';
+  const p=story.panels[n-1];
+  const sys='猫のセリフライターです。JSONのみ返す。{"bubble":"新しいセリフ(12文字以内)","caption":"新しいキャプション(15文字以内)"}';
+  try{
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${key}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({system_instruction:{parts:[{text:sys}]},contents:[{parts:[{text:`シーン：${p.scene}、キャラ：${p.speaker}。別のセリフとキャプションを作って`}]}],generationConfig:{temperature:1.3}})
+    });
+    const d=await res.json();
+    const raw=d.candidates[0].content.parts[0].text.replace(/```json|```/g,'').trim();
+    const j=JSON.parse(raw);
+    document.getElementById(`b${n}`).value=j.bubble||'';
+    document.getElementById(`c${n}`).value=j.caption||'';
+    story.panels[n-1].bubble=j.bubble;
+    story.panels[n-1].caption=j.caption;
+    onBubbleEdit(n);
+    showToast(`${n}コマ目のセリフを更新しました`);
+  }catch{showToast('セリフ再生成に失敗しました');}
+  btn.disabled=false;btn.textContent='💬 セリフ';
+}
+function regenBubble(n){regenBubbleOnly(n);}
+
+// ===== IMAGE =====
+function buildPrompt(scene,speaker){
+  const ch=speaker==='まるまる'?MARU_DESC:YANC_DESC;
+  const free=speaker==='まるまる'?getCharFree('m'):getCharFree('y');
+  const freeDesc=free?`, personality: ${free}`:'';
+  return `${CHAR_BASE}, ${selStyleVal}, ${ch}${freeDesc}, ${scene}, background is ${selBgVal}, pastel color palette, no text, adorable`;
+}
+let commonSeed = Math.floor(Math.random()*999999);
+
+async function loadPollinations(prompt,w=512,h=512,seedOffset=0){
+  const seed=commonSeed+seedOffset;
+  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=flux`;
+  return new Promise((res,rej)=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=rej;img.src=url;});
+}
+
+// ===== CANVAS BUBBLE =====
+function compositeImage(img,bubbleText,posHint){
+  const SIZE=512,c=document.createElement('canvas');
+  c.width=SIZE;c.height=SIZE;
+  const ctx=c.getContext('2d');
+  ctx.drawImage(img,0,0,SIZE,SIZE);
+  if(showBubble&&bubbleText&&bubbleText!=='...'){drawBubble(ctx,bubbleText,SIZE,posHint);}
+  const out=new Image();out.src=c.toDataURL('image/png');return out;
+}
+function wrapText(ctx,text,maxW){
+  // 2行対応：最大幅を超えたら折り返す
+  const words=text.split('');
+  const lines=[];let cur='';
+  for(const ch of words){
+    if(ctx.measureText(cur+ch).width>maxW){lines.push(cur);cur=ch;}
+    else cur+=ch;
+  }
+  if(cur)lines.push(cur);
+  return lines.slice(0,2); // 最大2行
+}
+
+function drawBubble(ctx,text,S,posHint){
+  // ランダム位置: 左・中・右
+  const pos=posHint!==undefined?posHint:Math.random();
+  const BW=S*0.68,R=S*0.027,TAIL=S*0.025;
+  const FONT=S*0.042;
+  ctx.font=`bold ${FONT}px 'Zen Maru Gothic',sans-serif`;
+  const lines=wrapText(ctx,text,BW-S*0.06);
+  const lineH=FONT*1.35;
+  const BH=Math.max(S*0.09,lines.length*lineH+S*0.04);
+
+  // 水平位置ランダム
+  let BX;
+  if(pos<0.33) BX=S*0.3;
+  else if(pos<0.66) BX=S*0.5;
+  else BX=S*0.7;
+  BX=Math.max(BW/2+S*0.02,Math.min(S-BW/2-S*0.02,BX));
+  const BY=S*0.13;
+
+  ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=S*0.015;ctx.shadowOffsetY=S*0.005;
+  ctx.fillStyle='white';ctx.strokeStyle='#1a1208';ctx.lineWidth=S*0.005;
+  ctx.beginPath();ctx.roundRect(BX-BW/2,BY-BH/2,BW,BH,R);ctx.fill();ctx.stroke();
+  ctx.shadowColor='transparent';
+
+  // しっぽ
+  const tailSide=BX<S*0.4?1:BX>S*0.6?-1:0;
+  const tx=BX+(tailSide===1?-BW/2+S*0.06:tailSide===-1?BW/2-S*0.06:0);
+  const ty=BY+BH/2;
+  ctx.fillStyle='white';
+  ctx.beginPath();ctx.moveTo(tx-S*0.025,ty-1);ctx.lineTo(tx-S*0.01,ty+TAIL);ctx.lineTo(tx+S*0.025,ty-1);ctx.fill();
+  ctx.beginPath();ctx.moveTo(tx-S*0.025,ty);ctx.lineTo(tx-S*0.01,ty+TAIL);
+  ctx.strokeStyle='#1a1208';ctx.lineWidth=S*0.005;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tx+S*0.025,ty);ctx.lineTo(tx-S*0.01,ty+TAIL);ctx.stroke();
+
+  // テキスト（2行）- アウトライン付きで視認性UP
+  ctx.font=`bold ${FONT}px 'Zen Maru Gothic',sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  const startY=BY-(lines.length-1)*lineH/2;
+  // アウトライン（白縁取り）
+  ctx.strokeStyle='white';ctx.lineWidth=FONT*0.18;ctx.lineJoin='round';
+  lines.forEach((l,i)=>ctx.strokeText(l,BX,startY+i*lineH));
+  // 本文
+  ctx.fillStyle='#1a1208';
+  lines.forEach((l,i)=>ctx.fillText(l,BX,startY+i*lineH));
+}
+function onBubbleEdit(n){
+  if(!imgs[n])return;
+  const comp=compositeImage(imgs[n],document.getElementById(`b${n}`).value,bubblePos[n]);
+  comp.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';
+  const wrap=document.getElementById(`p${n}`).querySelector('.iimg');
+  wrap.querySelectorAll('img').forEach(e=>e.remove());
+  wrap.insertBefore(comp,wrap.firstChild);
+}
+function recompositeAll(){for(let i=1;i<=4;i++)if(imgs[i])onBubbleEdit(i);}
+
+// ===== RESET =====
+function resetPanels(){
+  imgs={}; bubblePos={};
+  document.getElementById('saveBtn').disabled=true;
+  document.getElementById('stampBtn').disabled=true;
+  for(let i=1;i<=4;i++){
+    const card=document.getElementById(`p${i}`);
+    card.querySelectorAll('img').forEach(e=>e.remove());
+    card.querySelector('.ploading').style.display='flex';
+    document.getElementById(`b${i}`).value='...';
+    document.getElementById(`c${i}`).value='生成中...';
+    document.getElementById(`dl${i}`).disabled=true;
+    document.getElementById(`ri${i}`).disabled=true;
+    document.getElementById(`rt${i}`).disabled=true;
+  }
+}
+
+// ===== GENERATE =====
+async function generate(){
+  const key=document.getElementById('apiKey').value.trim();
+  if(!key){setStatus('⚠️ APIキーを入力してください');return}
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;btn.classList.add('loading');
+  document.getElementById('genBtnTxt').textContent='生成中...';
+  resetPanels();
+  const theme=mode==='t'?document.getElementById('themeInp').value.trim():selTagVal;
+  try{
+    setStatus('🤔 ストーリーを考え中...');
+    story=await callGemini(theme);
+    document.getElementById('comicSub').value='〜 '+(story.subtitle||story.title||'ねこのじかん')+' 〜';
+    document.getElementById('comicTitle').value=story.title||'ねこのじかん';
+    story.panels.forEach((p,i)=>{
+      document.getElementById(`b${i+1}`).value=p.bubble||'';
+      document.getElementById(`c${i+1}`).value=p.caption||'';
+    });
+    setStatus('🎨 イラスト生成中...');
+    let done=0;
+    await Promise.allSettled(story.panels.map(async(p,i)=>{
+      const n=i+1;
+      try{
+        const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker),512,512,n);
+        imgs[n]=rawImg;
+        bubblePos[n]=Math.random();
+        const comp=compositeImage(rawImg,p.bubble,bubblePos[n]);
+        comp.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';
+        const wrap=document.getElementById(`p${n}`).querySelector('.iimg');
+        wrap.querySelector('.ploading').style.display='none';
+        wrap.insertBefore(comp,wrap.firstChild);
+        wrap.style.cursor='pointer';
+        wrap.onclick=()=>regenPanel(n);
+        document.getElementById(`dl${n}`).disabled=false;
+        document.getElementById(`ri${n}`).disabled=false;
+        document.getElementById(`rt${n}`).disabled=false;
+        setStatus(`🎨 生成中... ${++done}/4`);
+      }catch{
+        document.getElementById(`p${n}`).querySelector('.ploading').innerHTML='<div style="font-size:0.65rem;color:#c08050;text-align:center">生成失敗🐱</div>';
+      }
+    }));
+    if(Object.keys(imgs).length>0){
+      setStatus('✅ 完成！セリフ編集・1コマ再生成もできます');
+      document.getElementById('saveBtn').disabled=false;
+      document.getElementById('stampBtn').disabled=false;
+      saveHist();
+      // Auto scroll to comic
+      setTimeout(()=>document.getElementById('comicWrap').scrollIntoView({behavior:'smooth',block:'start'}),300);
+    }else setStatus('生成に失敗しました。再試行してください');
+  }catch(e){setStatus('⚠️ '+e.message);console.error(e);}
+  btn.disabled=false;btn.classList.remove('loading');
+  document.getElementById('genBtnTxt').textContent='🐾 四コマを生成する';
+}
+
+// ===== REGEN SINGLE PANEL =====
+async function regenPanel(n){
+  if(!story?.panels?.[n-1])return;
+  const btn=document.getElementById(`ri${n}`);btn.disabled=true;btn.textContent='...';
+  const p=story.panels[n-1];
+  const wrap=document.getElementById(`p${n}`).querySelector('.iimg');
+  wrap.querySelectorAll('img').forEach(e=>e.remove());
+  const loading=wrap.querySelector('.ploading');loading.style.display='flex';
+  try{
+    const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker));
+    imgs[n]=rawImg;
+    bubblePos[n]=Math.random();
+    const comp=compositeImage(rawImg,document.getElementById(`b${n}`).value,bubblePos[n]);
+    comp.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';
+    loading.style.display='none';
+    wrap.insertBefore(comp,wrap.firstChild);
+    wrap.style.cursor='pointer';
+    wrap.onclick=()=>regenPanel(n);
+    showToast(`${n}コマ目を再生成しました`);
+  }catch{loading.innerHTML='<div style="font-size:0.65rem;color:#c08050;text-align:center">失敗🐱</div>';}
+  btn.disabled=false;btn.textContent='🖼 再生成';
+}
+
+function setStatus(t){document.getElementById('statusBar').textContent=t}
+
+// ===== DOWNLOAD =====
+function compositeHiRes(img,text,SIZE,posHint){
+  const c=document.createElement('canvas');c.width=SIZE;c.height=SIZE;
+  const ctx=c.getContext('2d');
+  ctx.drawImage(img,0,0,SIZE,SIZE);
+  if(showBubble&&text&&text!=='...')drawBubble(ctx,text,SIZE,posHint);
+  return c;
+}
+async function dlPanel(n){
+  const img=imgs[n];if(!img)return;
+  const W=1080,CAP=160,c=document.createElement('canvas');
+  c.width=W;c.height=W+CAP;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#fffdf8';ctx.fillRect(0,0,W,W);
+  const hiRes=compositeHiRes(img,document.getElementById(`b${n}`).value,W,bubblePos[n]);
+  ctx.drawImage(hiRes,0,0,W,W);
+  ctx.fillStyle='#1a1208';ctx.fillRect(0,W,W,CAP);
+  ctx.fillStyle=ORANGE;ctx.beginPath();ctx.arc(40,W+40,26,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='white';ctx.font='bold 28px serif';ctx.textAlign='center';ctx.fillText(n,40,W+50);
+  ctx.fillStyle='#f5b07a';ctx.font='bold 30px sans-serif';ctx.textAlign='left';
+  ctx.fillText(document.getElementById(`b${n}`).value,80,W+46);
+  ctx.fillStyle='#f5d8b8';ctx.font='24px sans-serif';
+  ctx.fillText(document.getElementById(`c${n}`).value,80,W+86);
+  ctx.fillStyle='#555';ctx.font='18px serif';ctx.textAlign='right';
+  ctx.fillText(document.getElementById('comicTitle').value||'ねこのじかん',W-24,W+140);
+  const a=document.createElement('a');a.download=`nekojikan_${n}of4.png`;a.href=c.toDataURL('image/png');a.click();
+}
+async function dlAll(){
+  setStatus('💾 4枚保存中...');
+  for(let i=1;i<=4;i++){if(imgs[i]){await dlPanel(i);await new Promise(r=>setTimeout(r,300));}}
+  setStatus('✅ 4枚保存しました！');
+  showToast('4枚保存完了！');
+}
+
+// ===== SHARE =====
+function openShare(n){
+  const t=document.getElementById('comicTitle').value||'ねこのじかん';
+  const sub=document.getElementById('comicSub').value||'';
+  const tags=story?.hashtags||'#猫 #ねこ #猫日常 #猫のいる生活 #猫漫画';
+  document.getElementById('shareTxt').value=`【${t}】\n${sub}\n\n${n}/4コマ目\n「${document.getElementById(`b${n}`).value}」\n${document.getElementById(`c${n}`).value}\n\n${tags}`;
+  document.getElementById('shareMod').classList.add('show');
+}
+function clShare(){document.getElementById('shareMod').classList.remove('show')}
+function cpShare(){
+  const t=document.getElementById('shareTxt');t.select();
+  navigator.clipboard.writeText(t.value).then(()=>showToast('コピーしました！'));
+}
+
+// ===== HISTORY =====
+function saveHist(){
+  const hist=JSON.parse(localStorage.getItem('neko_hist')||'[]');
+  const thumbs=[];
+  for(let i=1;i<=4;i++){
+    if(imgs[i]){const c=document.createElement('canvas');c.width=120;c.height=120;c.getContext('2d').drawImage(imgs[i],0,0,120,120);thumbs.push(c.toDataURL('image/jpeg',0.5));}
+    else thumbs.push(null);
+  }
+  hist.unshift({id:Date.now(),title:story.title,subtitle:story.subtitle,hashtags:story.hashtags,panels:story.panels,thumbs,date:new Date().toLocaleDateString('ja-JP'),fav:false});
+  if(hist.length>20)hist.splice(20);
+  localStorage.setItem('neko_hist',JSON.stringify(hist));
+}
+function toggleFav(idx,e){
+  e.stopPropagation();
+  const hist=JSON.parse(localStorage.getItem('neko_hist')||'[]');
+  hist[idx].fav=!hist[idx].fav;
+  localStorage.setItem('neko_hist',JSON.stringify(hist));
+  renderHist();
+}
+function renderHist(){
+  const raw=JSON.parse(localStorage.getItem('neko_hist')||'[]');
+  // Sort: favs first
+  const hist=[...raw.filter(h=>h.fav),...raw.filter(h=>!h.fav)];
+  const g=document.getElementById('hgrid');
+  if(!hist.length){g.innerHTML='<div class="hempty">まだ履歴がありません<br>四コマを生成してみよう🐱</div>';return}
+  // Find original indices
+  const origHist=JSON.parse(localStorage.getItem('neko_hist')||'[]');
+  g.innerHTML=hist.map(h=>{
+    const idx=origHist.findIndex(x=>x.id===h.id);
+    return `<div class="hitem${h.fav?' fav':''}" onclick="loadHist(${idx})">
+      <div class="hthumb">${h.thumbs.map(t=>t?`<img src="${t}"/>`:'<div class="hthumb-ph">🐱</div>').join('')}</div>
+      <div class="hinfo">
+        <div class="hinfo-text">
+          <div class="htitle">${h.title||'ねこのじかん'}</div>
+          <div class="hsub">${h.subtitle||''}</div>
+          <div class="hdate">${h.date}</div>
+        </div>
+        <button class="btn-fav" onclick="toggleFav(${idx},event)">${h.fav?'⭐':'☆'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function loadHist(i){
+  const hist=JSON.parse(localStorage.getItem('neko_hist')||'[]');
+  const h=hist[i];if(!h)return;
+  showSec('make',document.getElementById('mtab-make'));
+  story=h;
+  document.getElementById('comicTitle').value=h.title||'ねこのじかん';
+  document.getElementById('comicSub').value='〜 '+(h.subtitle||h.title||'ねこのじかん')+' 〜';
+  resetPanels();imgs={};document.getElementById('saveBtn').disabled=true;
+  h.panels.forEach((p,j)=>{
+    const n=j+1;
+    document.getElementById(`b${n}`).value=p.bubble||'';
+    document.getElementById(`c${n}`).value=p.caption||'';
+    if(h.thumbs[j]){
+      const img=new Image();img.src=h.thumbs[j];
+      img.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';
+      img.onload=()=>{
+        const wrap=document.getElementById(`p${n}`).querySelector('.iimg');
+        wrap.querySelector('.ploading').style.display='none';
+        wrap.querySelectorAll('img').forEach(e=>e.remove());
+        wrap.insertBefore(img,wrap.firstChild);
+        imgs[n]=img;
+        document.getElementById(`dl${n}`).disabled=false;
+        document.getElementById(`ri${n}`).disabled=false;
+        document.getElementById(`rt${n}`).disabled=false;
+        if(Object.keys(imgs).length===4){document.getElementById('saveBtn').disabled=false;setStatus('📚 履歴から復元しました');}
+      };
+    }
+  });
+  setTimeout(()=>document.getElementById('comicWrap').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+function clearHist(){
+  if(!confirm('履歴を全て削除しますか？'))return;
+  localStorage.removeItem('neko_hist');renderHist();
+}
+
+// ===== LINE STAMP EXPORT =====
+function createStamp(img, text){
+  const W=370, H=320;
+  const c=document.createElement('canvas');
+  c.width=W; c.height=H;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  // キャラ画像（上寄せ）
+  const size=256;
+  ctx.drawImage(img,(W-size)/2,8,size,size);
+  // セリフ
+  if(text&&text!=='...'){
+    ctx.font='bold 30px sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='bottom';
+    const tw=ctx.measureText(text).width+24;
+    ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.beginPath();ctx.roundRect((W-tw)/2,H-52,tw,40,10);ctx.fill();
+    ctx.strokeStyle='#1a1208';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#1a1208';
+    ctx.fillText(text,W/2,H-14);
+  }
+  return c.toDataURL('image/png');
+}
+
+function createMainImage(img){
+  const W=240,H=240;
+  const c=document.createElement('canvas');
+  c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  ctx.drawImage(img,0,0,W,W);
+  return c.toDataURL('image/png');
+}
+
+function createTabImage(img){
+  const W=96,H=74;
+  const c=document.createElement('canvas');
+  c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  ctx.drawImage(img,0,0,W,H);
+  return c.toDataURL('image/png');
+}
+
+async function exportStamps(){
+  if(!imgs[1]){showToast('先に四コマを生成してください');return}
+  if(typeof JSZip==='undefined'){showToast('JSZip読み込み中...しばらくお待ちください');return}
+
+  document.getElementById('stampBtn').disabled=true;
+  setStatus('🐾 LINEスタンプ生成中...(少し時間がかかります)');
+
+  // 16種セリフテンプレ
+  const texts=[
+    'ありがとう','OK','了解','おはよう',
+    'おやすみ','ごめん','笑','！？',
+    'いいね','だめ','まって','いく！',
+    '無理','最高','かわいい','ねむい'
+  ];
+
+  const zip=new JSZip();
+  let count=0;
+
+  for(let i=0;i<16;i++){
+    const baseImg=imgs[(i%4)+1];
+    if(!baseImg)continue;
+    const text=texts[i];
+    const dataUrl=createStamp(baseImg,text);
+    const blob=await(await fetch(dataUrl)).blob();
+    zip.file(`stamp_${i+1}.png`,blob);
+    count++;
+    setStatus(`🐾 スタンプ生成中... ${count}/16`);
+    await new Promise(r=>setTimeout(r,50));
+  }
+
+  // メイン画像（240×240）
+  const mainUrl=createMainImage(imgs[1]);
+  const mainBlob=await(await fetch(mainUrl)).blob();
+  zip.file('main.png',mainBlob);
+
+  // タブ画像（96×74）
+  const tabUrl=createTabImage(imgs[1]);
+  const tabBlob=await(await fetch(tabUrl)).blob();
+  zip.file('tab.png',tabBlob);
+
+  // ZIP生成・DL
+  const zipBlob=await zip.generateAsync({type:'blob'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(zipBlob);
+  a.download='line_stamps.zip';
+  a.click();
+
+  setStatus(`✅ スタンプ${count}枚+main+tabをZIPで保存！LINE Creators Marketにアップしてね`);
+  showToast('🐾 LINEスタンプZIP完成！');
+  document.getElementById('stampBtn').disabled=false;
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+</body>
+</html>
