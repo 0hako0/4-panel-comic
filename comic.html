@@ -63,7 +63,7 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 .theme-wrap.show{display:flex}
 .tags{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0 10px}
 .tag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
-.tag:hover,.tag.sel{background:var(–orange);border-color:var(–orange);color:white}
+.tag:hover,.tag.sel{background:#6b48cc;border-color:#6b48cc;color:white}
 
 /* STYLE PRESETS */
 .style-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
@@ -73,7 +73,7 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 /* BG THEMES */
 .bg-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .bgtag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
-.bgtag.sel{background:var(–orange);border-color:var(–orange);color:white}
+.bgtag.sel{background:#6b48cc;border-color:#6b48cc;color:white}
 
 /* BUBBLE TOGGLE */
 .toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px 12px;background:white;border:1.5px solid var(–olight);border-radius:10px}
@@ -522,7 +522,8 @@ async function genChar(n){
     ?`${CHAR_BASE}, ${MARU_DESC}, ${selStyleVal}, portrait, white background, full body`
     :`${CHAR_BASE}, ${YANC_DESC}, ${selStyleVal}, portrait, white background, full body`;
   try{
-    const image=await loadPollinations(prompt,512,512);
+    const charSeed=Math.floor(Math.random()*999999);
+    const image=await loadPollinations(prompt,512,512,charSeed-commonSeed);
     const c=document.createElement('canvas');c.width=image.width;c.height=image.height;
     c.getContext('2d').drawImage(image,0,0);
     applyChar(n,c.toDataURL('image/jpeg',0.7));
@@ -749,9 +750,12 @@ async function generate(){
     });
     setStatus('🎨 イラスト生成中...');
     let done=0;
-    await Promise.allSettled(story.panels.map(async(p,i)=>{
+    // 順番に生成（レート制限対策）
+    for(let i=0;i<story.panels.length;i++){
+      const p=story.panels[i];
       const n=i+1;
       try{
+        setStatus(`🎨 ${n}コマ目を生成中... (${n}/4)`);
         const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker),512,512,n);
         imgs[n]=rawImg;
         bubblePos[n]=Math.random();
@@ -765,11 +769,15 @@ async function generate(){
         document.getElementById(`dl${n}`).disabled=false;
         document.getElementById(`ri${n}`).disabled=false;
         document.getElementById(`rt${n}`).disabled=false;
-        setStatus(`🎨 生成中... ${++done}/4`);
-      }catch{
-        document.getElementById(`p${n}`).querySelector('.ploading').innerHTML='<div style="font-size:0.65rem;color:#c08050;text-align:center">生成失敗🐱</div>';
+        done++;
+        // コマ間に少し待機してレート制限を回避
+        if(i<3) await new Promise(r=>setTimeout(r,800));
+      }catch(err){
+        console.error(`panel ${n} failed:`,err);
+        document.getElementById(`p${n}`).querySelector('.ploading').innerHTML=
+          `<div style="font-size:0.65rem;color:#c08050;text-align:center">生成失敗🐱<br><button onclick="regenPanel(${n})" style="margin-top:4px;padding:3px 8px;border:none;border-radius:6px;background:#e8874a;color:white;font-size:0.6rem;cursor:pointer">再試行</button></div>`;
       }
-    }));
+    }
     if(Object.keys(imgs).length>0){
       setStatus('✅ 完成！セリフ編集・1コマ再生成もできます');
       document.getElementById('saveBtn').disabled=false;
