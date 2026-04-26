@@ -576,7 +576,7 @@ JSONのみ返してください。バッククォート不要。
 - 4コマ目（結）: シュールまたは平和なオチ（必ずオチをつける）
 sceneには必ずキャラの表情(facial expression)を具体的に含めること（例: shocked face, happy closed eyes, evil grin, sulking face, sparkling eyes など）。
 {"title":"タイトル(10文字以内)","subtitle":"サブタイトル(20文字以内)","hashtags":"#猫など5-8個","panels":[{"caption":"コマ説明(15文字以内)","bubble":"セリフ(12文字以内)","speaker":"まるまる or やんちゃ","scene":"英語シーン説明+facial expression(30words以内)"},{"caption":"...","bubble":"...","speaker":"...","scene":"..."},{"caption":"...","bubble":"...","speaker":"...","scene":"..."},{"caption":"...","bubble":"...","speaker":"...","scene":"..."}]}`;
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${key}`,{
+  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({system_instruction:{parts:[{text:sys}]},contents:[{parts:[{text:theme?`テーマ「${theme}」で四コマを作って`:'ランダムな面白い四コマを作って'}]}],generationConfig:{temperature:1.0}})
   });
@@ -594,7 +594,7 @@ async function regenBubbleOnly(n){
   const p=story.panels[n-1];
   const sys='猫のセリフライターです。JSONのみ返す。{"bubble":"新しいセリフ(12文字以内)","caption":"新しいキャプション(15文字以内)"}';
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${key}`,{
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({system_instruction:{parts:[{text:sys}]},contents:[{parts:[{text:`シーン：${p.scene}、キャラ：${p.speaker}。別のセリフとキャプションを作って`}]}],generationConfig:{temperature:1.3}})
     });
