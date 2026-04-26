@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -15,79 +14,79 @@ body{background:var(--cream);background-image:radial-gradient(circle at 20% 20%,
 .header{text-align:center;margin-bottom:18px}
 .cats-emoji{font-size:1.8rem;display:block;margin-bottom:4px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.header-title{font-family:‘Kaisei Decol’,serif;font-size:2rem;font-weight:700;color:var(–brown);letter-spacing:2px}
-.header-title span{color:var(–orange)}
+.header-title{font-family:'Kaisei Decol',serif;font-size:2rem;font-weight:700;color:var(--brown);letter-spacing:2px}
+.header-title span{color:var(--orange)}
 .header-sub{font-size:0.72rem;color:#b8895a;margin-top:4px;letter-spacing:3px}
 
 /* TABS */
 .main-tabs{display:flex;gap:6px;width:100%;max-width:480px;margin-bottom:16px}
-.main-tab{flex:1;padding:10px;border:2px solid var(–olight);border-radius:10px;background:white;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.78rem;font-weight:700;color:#bbb;cursor:pointer;transition:all 0.2s}
+.main-tab{flex:1;padding:10px;border:2px solid var(--olight);border-radius:10px;background:white;font-family:'Zen Maru Gothic',sans-serif;font-size:0.78rem;font-weight:700;color:#bbb;cursor:pointer;transition:all 0.2s}
 .main-tab.active{background:#38bdf8;border-color:#38bdf8;color:white;box-shadow:2px 2px 0 #0ea5e9}
 .section{display:none;width:100%;max-width:480px;flex-direction:column}
 .section.show{display:flex}
 
 /* CHAR SETUP */
 .char-setup{display:flex;gap:10px;margin-bottom:12px}
-.char-slot{flex:1;background:white;border:2px solid var(–olight);border-radius:14px;padding:12px;text-align:center;box-shadow:3px 3px 0 var(–olight);transition:all 0.2s}
-.char-slot.confirmed{border-color:var(–orange);box-shadow:3px 3px 0 var(–orange)}
-.char-slot-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(–olight);margin:0 auto 6px;display:none}
-.char-slot-ph{width:80px;height:80px;border-radius:50%;border:3px dashed var(–olight);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:#fdf8f0}
-.char-name{font-size:0.85rem;font-weight:700;color:var(–brown);margin-bottom:2px}
+.char-slot{flex:1;background:white;border:2px solid var(--olight);border-radius:14px;padding:12px;text-align:center;box-shadow:3px 3px 0 var(--olight);transition:all 0.2s}
+.char-slot.confirmed{border-color:var(--orange);box-shadow:3px 3px 0 var(--orange)}
+.char-slot-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--olight);margin:0 auto 6px;display:none}
+.char-slot-ph{width:80px;height:80px;border-radius:50%;border:3px dashed var(--olight);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:#fdf8f0}
+.char-name{font-size:0.85rem;font-weight:700;color:var(--brown);margin-bottom:2px}
 .char-desc{font-size:0.6rem;color:#999;line-height:1.4;margin-bottom:6px}
-.char-st{font-size:0.62rem;color:var(–orange);min-height:14px;margin-bottom:4px}
-.btn-c{width:100%;padding:6px;border:none;border-radius:8px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;margin-top:4px;transition:all 0.15s}
-.btn-c-gen{background:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
-.btn-c-gen:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(–brown)}
-.btn-c-rst{background:white;color:var(–brown);border:1.5px solid var(–olight)!important}
+.char-st{font-size:0.62rem;color:var(--orange);min-height:14px;margin-bottom:4px}
+.btn-c{width:100%;padding:6px;border:none;border-radius:8px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;margin-top:4px;transition:all 0.15s}
+.btn-c-gen{background:var(--orange);color:white;box-shadow:2px 2px 0 var(--brown)}
+.btn-c-gen:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--brown)}
+.btn-c-rst{background:white;color:var(--brown);border:1.5px solid var(--olight)!important}
 
 /* PERSONALITY SLIDERS */
-.slider-section{background:white;border:2px solid var(–olight);border-radius:12px;padding:12px;margin-bottom:12px}
-.slider-title{font-size:0.72rem;font-weight:700;color:var(–brown);margin-bottom:10px}
+.slider-section{background:white;border:2px solid var(--olight);border-radius:12px;padding:12px;margin-bottom:12px}
+.slider-title{font-size:0.72rem;font-weight:700;color:var(--brown);margin-bottom:10px}
 .slider-row{margin-bottom:10px}
 .slider-labels{display:flex;justify-content:space-between;font-size:0.62rem;color:#aaa;margin-bottom:4px}
-.slider-name{font-size:0.68rem;color:var(–brown);font-weight:700;margin-bottom:3px}
-input[type=range]{width:100%;accent-color:var(–orange);height:4px}
+.slider-name{font-size:0.68rem;color:var(--brown);font-weight:700;margin-bottom:3px}
+input[type=range]{width:100%;accent-color:var(--orange);height:4px}
 
 /* INPUTS */
 .api-section{margin-bottom:14px}
 .lbl{font-size:0.72rem;color:#b8895a;margin-bottom:5px;display:block}
-.inp{width:100%;padding:12px 14px;border:2px solid var(–olight);border-radius:12px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.85rem;background:white;color:var(–ink);outline:none}
-.inp:focus{border-color:var(–orange)}
+.inp{width:100%;padding:12px 14px;border:2px solid var(--olight);border-radius:12px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.85rem;background:white;color:var(--ink);outline:none}
+.inp:focus{border-color:var(--orange)}
 .hint{font-size:0.62rem;color:#ccc;margin-top:3px}
 
 /* MODE TABS */
 .mode-tabs{display:flex;gap:6px;margin-bottom:10px}
-.tab{flex:1;padding:10px;border:2px solid var(–olight);border-radius:10px;background:white;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.8rem;font-weight:700;color:#bbb;cursor:pointer;transition:all 0.2s}
+.tab{flex:1;padding:10px;border:2px solid var(--olight);border-radius:10px;background:white;font-family:'Zen Maru Gothic',sans-serif;font-size:0.8rem;font-weight:700;color:#bbb;cursor:pointer;transition:all 0.2s}
 .tab.active{background:#38bdf8;border-color:#38bdf8;color:white;box-shadow:2px 2px 0 #0ea5e9}
 .theme-wrap{display:none;gap:8px}
 .theme-wrap.show{display:flex}
 .tags{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0 10px}
-.tag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.tag{padding:5px 12px;background:white;border:1.5px solid var(--olight);border-radius:20px;font-size:0.72rem;color:var(--brown);cursor:pointer;transition:all 0.15s}
 .tag:hover,.tag.sel{background:#38bdf8;border-color:#38bdf8;color:white}
 
 /* STYLE PRESETS */
 .style-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.stag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.stag{padding:5px 12px;background:white;border:1.5px solid var(--olight);border-radius:20px;font-size:0.72rem;color:var(--brown);cursor:pointer;transition:all 0.15s}
 .stag.sel{background:#38bdf8;border-color:#38bdf8;color:white}
 
 /* BG THEMES */
 .bg-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.bgtag{padding:5px 12px;background:white;border:1.5px solid var(–olight);border-radius:20px;font-size:0.72rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
+.bgtag{padding:5px 12px;background:white;border:1.5px solid var(--olight);border-radius:20px;font-size:0.72rem;color:var(--brown);cursor:pointer;transition:all 0.15s}
 .bgtag.sel{background:#38bdf8;border-color:#38bdf8;color:white}
 
 /* BUBBLE TOGGLE */
-.toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px 12px;background:white;border:1.5px solid var(–olight);border-radius:10px}
-.toggle-lbl{font-size:0.75rem;color:var(–brown);font-weight:700;flex:1}
+.toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px 12px;background:white;border:1.5px solid var(--olight);border-radius:10px}
+.toggle-lbl{font-size:0.75rem;color:var(--brown);font-weight:700;flex:1}
 .toggle{position:relative;width:44px;height:24px;cursor:pointer}
 .toggle input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:24px;transition:0.3s}
-.toggle-slider:before{content:’’;position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s}
-.toggle input:checked + .toggle-slider{background:var(–orange)}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s}
+.toggle input:checked + .toggle-slider{background:var(--orange)}
 .toggle input:checked + .toggle-slider:before{transform:translateX(20px)}
 
 /* GEN BUTTON */
-.btn-gen{width:100%;padding:16px;background:var(–orange);border:none;border-radius:14px;font-family:‘Kaisei Decol’,serif;font-size:1.1rem;font-weight:700;color:white;cursor:pointer;box-shadow:4px 4px 0 var(–brown);transition:all 0.15s;margin-bottom:12px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-gen:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(–brown)}
+.btn-gen{width:100%;padding:16px;background:var(--orange);border:none;border-radius:14px;font-family:'Kaisei Decol',serif;font-size:1.1rem;font-weight:700;color:white;cursor:pointer;box-shadow:4px 4px 0 var(--brown);transition:all 0.15s;margin-bottom:12px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gen:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--brown)}
 .btn-gen:disabled{background:#ddd;box-shadow:2px 2px 0 #bbb;cursor:not-allowed}
 @keyframes spin2{to{transform:rotate(360deg)}}
 .btn-spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin2 0.7s linear infinite;display:none}
@@ -98,34 +97,34 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 
 /* COMIC */
 .comic-wrap{width:100%;max-width:480px;margin-bottom:12px}
-.comic-bar{background:var(–ink);color:white;padding:10px 14px;border-radius:12px 12px 0 0}
-.comic-bar-title{font-family:‘Kaisei Decol’,serif;font-size:0.95rem;letter-spacing:1px;background:transparent;border:none;color:white;width:100%;outline:none;font-family:‘Kaisei Decol’,serif}
-.comic-bar-sub{font-size:0.65rem;color:var(–olight);letter-spacing:0.5px;background:transparent;border:none;color:var(–olight);width:100%;outline:none;margin-top:2px;font-family:‘Zen Maru Gothic’,sans-serif}
-.igrid{display:flex;flex-direction:column;gap:12px;padding:12px;background:var(–ink);border:2px solid var(–ink);border-top:none;border-radius:0 0 12px 12px}
-.icard{background:var(–pbg);border-radius:10px;overflow:hidden;box-shadow:2px 2px 0 var(–brown)}
+.comic-bar{background:var(--ink);color:white;padding:10px 14px;border-radius:12px 12px 0 0}
+.comic-bar-title{font-family:'Kaisei Decol',serif;font-size:0.95rem;letter-spacing:1px;background:transparent;border:none;color:white;width:100%;outline:none;font-family:'Kaisei Decol',serif}
+.comic-bar-sub{font-size:0.65rem;color:var(--olight);letter-spacing:0.5px;background:transparent;border:none;color:var(--olight);width:100%;outline:none;margin-top:2px;font-family:'Zen Maru Gothic',sans-serif}
+.igrid{display:flex;flex-direction:column;gap:12px;padding:12px;background:var(--ink);border:2px solid var(--ink);border-top:none;border-radius:0 0 12px 12px}
+.icard{background:var(--pbg);border-radius:10px;overflow:hidden;box-shadow:2px 2px 0 var(--brown)}
 .iimg{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#fdf0e0}
 .iimg img{width:100%;height:100%;object-fit:cover;display:block}
 .ploading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fdf0e0;gap:6px;z-index:2}
-.spinner{width:28px;height:28px;border:3px solid #f5d8b8;border-top-color:var(–orange);border-radius:50%;animation:spin2 0.7s linear infinite}
+.spinner{width:28px;height:28px;border:3px solid #f5d8b8;border-top-color:var(--orange);border-radius:50%;animation:spin2 0.7s linear infinite}
 .lcat{font-size:1.4rem;animation:float 1s ease-in-out infinite}
 .ifooter{padding:10px 12px;display:flex;flex-direction:column;gap:4px}
-.inum{font-size:0.65rem;color:#bbb;font-family:‘Kaisei Decol’,serif}
-.ibubble{font-size:0.85rem;font-weight:700;color:var(–brown);border:none;background:transparent;font-family:‘Zen Maru Gothic’,sans-serif;width:100%;outline:none;border-bottom:1px dashed var(–olight);padding:2px 0}
-.icap{font-size:0.78rem;color:#666;border:none;background:transparent;font-family:‘Zen Maru Gothic’,sans-serif;width:100%;outline:none;border-bottom:1px dashed #eee;padding:2px 0}
+.inum{font-size:0.65rem;color:#bbb;font-family:'Kaisei Decol',serif}
+.ibubble{font-size:0.85rem;font-weight:700;color:var(--brown);border:none;background:transparent;font-family:'Zen Maru Gothic',sans-serif;width:100%;outline:none;border-bottom:1px dashed var(--olight);padding:2px 0}
+.icap{font-size:0.78rem;color:#666;border:none;background:transparent;font-family:'Zen Maru Gothic',sans-serif;width:100%;outline:none;border-bottom:1px dashed #eee;padding:2px 0}
 .iactions{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
-.btn-sm{padding:5px 10px;border:none;border-radius:8px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;transition:all 0.15s}
+.btn-sm{padding:5px 10px;border:none;border-radius:8px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;transition:all 0.15s}
 .btn-sm:active{transform:translate(1px,1px)}
-.btn-dl{background:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
+.btn-dl{background:var(--orange);color:white;box-shadow:2px 2px 0 var(--brown)}
 .btn-dl:disabled{background:#ddd;box-shadow:none;cursor:not-allowed}
 .btn-regen-img{background:#27ae60;color:white;box-shadow:2px 2px 0 #1e8449}
 .btn-regen-txt{background:#2980b9;color:white;box-shadow:2px 2px 0 #1a5276}
-.btn-share{background:white;color:var(–orange);border:1.5px solid var(–orange)}
+.btn-share{background:white;color:var(--orange);border:1.5px solid var(--orange)}
 
 /* BOTTOM */
 .bot-btns{width:100%;max-width:480px;display:flex;gap:10px;margin-bottom:6px}
-.btn-sub{flex:1;padding:13px;border:2px solid var(–orange);border-radius:12px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.15s;box-shadow:2px 2px 0 var(–brown)}
-.btn-sub:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(–brown)}
-.btn-all{background:var(–orange);color:white}
+.btn-sub{flex:1;padding:13px;border:2px solid var(--orange);border-radius:12px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.15s;box-shadow:2px 2px 0 var(--brown)}
+.btn-sub:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--brown)}
+.btn-all{background:var(--orange);color:white}
 .btn-stamp{background:#06c755;color:white;border-color:#06c755}
 .btn-stamp:disabled{background:#ddd;border-color:#ddd;box-shadow:none;cursor:not-allowed}
 .btn-all:disabled{background:#ddd;border-color:#ddd;box-shadow:none;cursor:not-allowed}
@@ -133,15 +132,15 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 /* HISTORY */
 .hgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:360px){.hgrid{grid-template-columns:1fr}}
-.hitem{background:white;border:2px solid var(–olight);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.15s;box-shadow:2px 2px 0 var(–olight)}
-.hitem:hover{box-shadow:3px 3px 0 var(–orange);border-color:var(–orange)}
+.hitem{background:white;border:2px solid var(--olight);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.15s;box-shadow:2px 2px 0 var(--olight)}
+.hitem:hover{box-shadow:3px 3px 0 var(--orange);border-color:var(--orange)}
 .hitem.fav{border-color:#f1c40f;box-shadow:2px 2px 0 #f1c40f}
 .hthumb{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#eee;aspect-ratio:1}
 .hthumb img{width:100%;height:100%;object-fit:cover;display:block}
 .hthumb-ph{background:#fdf0e0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
 .hinfo{padding:8px 10px;display:flex;align-items:flex-start;gap:4px}
 .hinfo-text{flex:1}
-.htitle{font-size:0.75rem;font-weight:700;color:var(–brown)}
+.htitle{font-size:0.75rem;font-weight:700;color:var(--brown)}
 .hsub{font-size:0.62rem;color:#aaa;margin-top:1px}
 .hdate{font-size:0.58rem;color:#ccc;margin-top:2px}
 .btn-fav{background:none;border:none;font-size:1rem;cursor:pointer;padding:2px}
@@ -151,31 +150,30 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 .mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:20px}
 .mbg.show{display:flex}
 .modal{background:white;border-radius:16px;padding:20px;width:100%;max-width:400px}
-.modal h3{font-family:‘Kaisei Decol’,serif;color:var(–brown);margin-bottom:12px;font-size:1rem}
-.modal textarea{width:100%;border:2px solid var(–olight);border-radius:10px;padding:10px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.78rem;line-height:1.6;min-height:150px;outline:none;resize:vertical;color:var(–ink)}
+.modal h3{font-family:'Kaisei Decol',serif;color:var(--brown);margin-bottom:12px;font-size:1rem}
+.modal textarea{width:100%;border:2px solid var(--olight);border-radius:10px;padding:10px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.78rem;line-height:1.6;min-height:150px;outline:none;resize:vertical;color:var(--ink)}
 .mbtns{display:flex;gap:8px;margin-top:12px}
-.mbtn{flex:1;padding:10px;border:none;border-radius:10px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer}
-.mbtn-cp{background:var(–orange);color:white;box-shadow:2px 2px 0 var(–brown)}
-.mbtn-cl{background:white;color:var(–brown);border:1.5px solid var(–olight)}
+.mbtn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer}
+.mbtn-cp{background:var(--orange);color:white;box-shadow:2px 2px 0 var(--brown)}
+.mbtn-cl{background:white;color:var(--brown);border:1.5px solid var(--olight)}
 
 /* TOAST */
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(–ink);color:white;padding:10px 20px;border-radius:20px;font-size:0.78rem;font-weight:700;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:10px 20px;border-radius:20px;font-size:0.78rem;font-weight:700;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
 .toast.show{opacity:1}
 
 .paw{font-size:0.7rem;color:#ddd;text-align:center;margin-top:20px;letter-spacing:4px}
 /* CHAR CUSTOM */
-.char-custom{background:white;border:2px solid var(–olight);border-radius:12px;padding:12px;margin-bottom:12px}
-.char-custom-title{font-size:0.72rem;font-weight:700;color:var(–brown);margin-bottom:8px}
+.char-custom{background:white;border:2px solid var(--olight);border-radius:12px;padding:12px;margin-bottom:12px}
+.char-custom-title{font-size:0.72rem;font-weight:700;color:var(--brown);margin-bottom:8px}
 .char-custom-row{margin-bottom:10px}
-.char-custom-name{font-size:0.68rem;color:var(–brown);font-weight:700;margin-bottom:4px}
-.char-custom-inp{width:100%;padding:8px 10px;border:1.5px solid var(–olight);border-radius:8px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.75rem;background:#fdf8f4;color:var(–ink);outline:none;resize:none;min-height:36px}
-.char-custom-inp:focus{border-color:var(–orange)}
+.char-custom-name{font-size:0.68rem;color:var(--brown);font-weight:700;margin-bottom:4px}
+.char-custom-inp{width:100%;padding:8px 10px;border:1.5px solid var(--olight);border-radius:8px;font-family:'Zen Maru Gothic',sans-serif;font-size:0.75rem;background:#fdf8f4;color:var(--ink);outline:none;resize:none;min-height:36px}
+.char-custom-inp:focus{border-color:var(--orange)}
 .char-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
-.char-tag{padding:3px 10px;background:#f5f0ea;border:1.5px solid var(–olight);border-radius:14px;font-size:0.65rem;color:var(–brown);cursor:pointer;transition:all 0.15s}
-.char-tag:hover{background:var(–orange);border-color:var(–orange);color:white}
+.char-tag{padding:3px 10px;background:#f5f0ea;border:1.5px solid var(--olight);border-radius:14px;font-size:0.65rem;color:var(--brown);cursor:pointer;transition:all 0.15s}
+.char-tag:hover{background:var(--orange);border-color:var(--orange);color:white}
 .char-custom-hint{font-size:0.6rem;color:#ccc;margin-top:4px}
 </style>
-
 </head>
 <body>
 
@@ -192,7 +190,6 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 </div>
 
 <!-- ===== MAKE ===== -->
-
 <div class="section show" id="sec-make">
   <div class="api-section">
     <span class="lbl">🔑 Gemini APIキー</span>
@@ -223,8 +220,7 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
     <input class="inp" id="themeInp" placeholder="例：雨の日の退屈、おやつを狙う..." maxlength="30" />
   </div>
 
-<span class="lbl">🎨 画像スタイル:</span>
-
+  <span class="lbl">🎨 画像スタイル:</span>
   <div class="style-row">
     <span class="stag sel" onclick="selStyle(this)" data-style="cute kawaii chibi cartoon style, thick black outlines, flat color, cel shading">かわいい</span>
     <span class="stag" onclick="selStyle(this)" data-style="watercolor painting style, soft brushstrokes, pastel watercolor">水彩</span>
@@ -233,8 +229,7 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
     <span class="stag" onclick="selStyle(this)" data-style="realistic detailed illustration, painterly style">リアル風</span>
   </div>
 
-<span class="lbl">🌿 背景テーマ:</span>
-
+  <span class="lbl">🌿 背景テーマ:</span>
   <div class="bg-row">
     <span class="bgtag sel" onclick="selBg(this)" data-bg="cozy japanese apartment interior">室内</span>
     <span class="bgtag" onclick="selBg(this)" data-bg="sunny garden with flowers">庭</span>
@@ -331,7 +326,6 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 </div>
 
 <!-- ===== CHAR ===== -->
-
 <div class="section" id="sec-char">
   <div class="char-setup">
     <div class="char-slot" id="slot-m">
@@ -355,7 +349,6 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
   </div>
 
   <!-- キャラ自由設定 -->
-
   <div class="char-custom">
     <div class="char-custom-title">✏️ キャラ追加設定（2〜3個まで）</div>
     <div class="char-custom-row">
@@ -411,7 +404,6 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 </div>
 
 <!-- ===== HISTORY ===== -->
-
 <div class="section" id="sec-history">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <span style="font-size:0.8rem;font-weight:700;color:var(--brown)">📚 生成履歴</span>
@@ -421,7 +413,6 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 </div>
 
 <!-- SHARE MODAL -->
-
 <div class="mbg" id="shareMod">
   <div class="modal">
     <h3>📋 シェア用キャプション</h3>
@@ -434,7 +425,6 @@ input[type=range]{width:100%;accent-color:var(–orange);height:4px}
 </div>
 
 <!-- TOAST -->
-
 <div class="toast" id="toast"></div>
 
 <div class="paw">🐾 🐾 🐾</div>
@@ -522,13 +512,12 @@ async function genChar(n){
     ?`${CHAR_BASE}, ${MARU_DESC}, ${selStyleVal}, portrait, white background, full body`
     :`${CHAR_BASE}, ${YANC_DESC}, ${selStyleVal}, portrait, white background, full body`;
   try{
-    const charSeed=Math.floor(Math.random()*999999);
-    const image=await loadPollinations(prompt,512,512,charSeed-commonSeed);
+    const image=await loadPollinations(prompt,512,512,0);
     const c=document.createElement('canvas');c.width=image.width;c.height=image.height;
     c.getContext('2d').drawImage(image,0,0);
     applyChar(n,c.toDataURL('image/jpeg',0.7));
     st.textContent='✅ 確定！';
-  }catch{st.textContent='⚠️ 失敗。再試行してね';}
+  }catch(e){st.textContent='⚠️ 失敗。再試行してね';console.error(e);}
 }
 
 // ===== CHAR FREE INPUT =====
@@ -632,10 +621,25 @@ function buildPrompt(scene,speaker){
 }
 let commonSeed = Math.floor(Math.random()*999999);
 
-async function loadPollinations(prompt,w=512,h=512,seedOffset=0){
-  const seed=commonSeed+seedOffset;
-  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=flux`;
-  return new Promise((res,rej)=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=rej;img.src=url;});
+async function loadPollinations(prompt,w=512,h=512,seedOffset=0,speaker=''){
+  // キャラタブで確定したキャラ画像があれば参照として送る
+  const charKey = speaker==='まるまる' ? 'm' : speaker==='やんちゃ' ? 'y' : null;
+  const charImageBase64 = charKey && charImgs[charKey] ? charImgs[charKey] : null;
+
+  const body = { prompt };
+  if(charImageBase64) body.charImageBase64 = charImageBase64;
+
+  const res=await fetch('https://vercel-api-kappa-sandy.vercel.app/api/generate',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  const data=await res.json();
+  if(!data.imageUrl)throw new Error('画像生成失敗: '+JSON.stringify(data));
+  return new Promise((resolve,reject)=>{
+    const img=new Image();img.crossOrigin='anonymous';
+    img.onload=()=>resolve(img);img.onerror=reject;img.src=data.imageUrl;
+  });
 }
 
 // ===== CANVAS BUBBLE =====
@@ -756,7 +760,7 @@ async function generate(){
       const n=i+1;
       try{
         setStatus(`🎨 ${n}コマ目を生成中... (${n}/4)`);
-        const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker),512,512,n);
+        const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker),512,512,n,p.speaker);
         imgs[n]=rawImg;
         bubblePos[n]=Math.random();
         const comp=compositeImage(rawImg,p.bubble,bubblePos[n]);
@@ -800,7 +804,7 @@ async function regenPanel(n){
   wrap.querySelectorAll('img').forEach(e=>e.remove());
   const loading=wrap.querySelector('.ploading');loading.style.display='flex';
   try{
-    const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker));
+    const rawImg=await loadPollinations(buildPrompt(p.scene,p.speaker),512,512,0,p.speaker);
     imgs[n]=rawImg;
     bubblePos[n]=Math.random();
     const comp=compositeImage(rawImg,document.getElementById(`b${n}`).value,bubblePos[n]);
@@ -1038,8 +1042,6 @@ async function exportStamps(){
   document.getElementById('stampBtn').disabled=false;
 }
 </script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
 </body>
 </html>
